@@ -14,6 +14,8 @@
 </style>
 
 {# For demo purposes, show our cookies #}
+{# request.cookies is magically, automatically available in our template #}
+{# so we don't have to pass it through the template #}
 {% if request.cookies %}
   <fieldset>
     <label>Cookies Received By Flask</label>

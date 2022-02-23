@@ -11,6 +11,12 @@ app = Flask(__name__)
 # public place like GitHub
 app.config["SECRET_KEY"] = "4534gdghjk5d#$RGR^HDG"
 
+# special decorator, before_request, and whatever function we define
+# down here using Python or JS, this funciton will run before every
+# # single request basically before every route is acutally run, any
+# of these view functions are run:
+# you can go "Dev Tools → Application → Storage → Cookies" to add cookies for testing
+
 
 @app.before_request
 def print_cookies():
