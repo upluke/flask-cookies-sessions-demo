@@ -116,9 +116,12 @@ def handle_sessions_form():
     session["nickname"] = request.args["nickname"]
     session["lucky_number"] = int(request.args["lucky_number"])
 
+    # return render_template("response-session.html", nickname=session["nickname"], lucky_number=session["lucky_number"])
+
     # Since we stored this in the session, we don't even need
     # to pass it to the template directly--jinja templates
     # automatically have access to session information
+
     return render_template("response-session.html")
 
 
@@ -180,3 +183,78 @@ def show_secret_invite():
         return render_template("invite.html")
     else:
         return redirect("/login-form")
+
+
+# -- Sessions
+# * Contain info for the current browser
+# * Preserve type (lists stay lists, etc)
+# * Are “signed”, so users can’t modify data
+# But we still run up against size limitations with the default Flask session, bc the more data we have,
+# the more complex stuff we're trying to store, we're going to hit a top limit for the size of a cookie at some point.
+# So if you do have very large amounts of data that you need to store using a session, you could
+# implement server-side sessions. And Flask does support this.
+
+# -- Using Session in Flask
+# 1. Import session from flask
+# 2. Set a secret_key
+
+# from flask import Flask, session
+
+# app = Flask(__name__)
+# app.config["SECRET_KEY"] = "SHHHHHHHHHHH SEEKRIT"
+# Now, in routes, you can treat session as a dictionary:
+
+# @app.route('/some-route')
+# def some_route():
+#     """Set fav_number in session."""
+
+#     session['fav_number'] = 42
+#     return "Ok, I put that in the session."
+
+# -- To get things out, treat it like a dictionary:
+
+# from flask import session
+
+# @app.route('/my-route')
+# def my_route():
+#     """Return information using fav_number from session."""
+
+#     return f"Favorite number is {session['fav_number']}"
+
+# -- It will stay the same kind of data (in this example, an integer)
+
+# You also have direct access to session automatically in Jinja templates:
+
+# Your favorite number is {{ session['fav_number'] }}
+
+
+# How Do Sessions Work?
+# Different web frameworks handle this differently
+# In Flask, the sessions are stored in the browser as a cookie
+# session = "eyJjYXJ0IjLDIsMiwyLDJdfQ.CP0ryA2EMSZdE"
+# They’re “serialized” and “signed”
+# So users could see, but can’t change their actual session data—only Flask can
+# Advanced details: Flask by default uses the Werkzeug provided “secure cookie” as session system. It works by serializing the session data, compressing it and base64 encoding it.
+
+# Are “Sessions” Related to “Session Cookies”?
+# Not directly, no.
+
+# They both just use the term “session” but to mean something different.
+
+# By default: Flask sessions use browser-lifetime cookies (“session cookies”). So a Flask session lasts as long as your browser window.
+
+# Yes, you can change that (read the Flask docs!)
+
+# This distinction isn’t too important right now, but the terminology sometimes comes up in interviews, so be sure to review this material!
+
+# Server-Side Sessions
+# Some web frameworks store session data on the server instead
+# Often, in a relational database
+# Send a cookie with “session key”, which tells server how to get the real data
+# Useful when you have lots of session data, or for complex setups
+# Flask can do this with the add-on Flask-Session
+# Which Should I Use? Cookies or Sessions?
+# Generally, sessions.
+
+
+# It’s important to know how cookies work, but if your framework provides sessions (as Flask does), they’re easier to work with.
