@@ -21,15 +21,25 @@ app.config["SECRET_KEY"] = "4534gdghjk5d#$RGR^HDG"
 @app.before_request
 def print_cookies():
     """For every single request that comes in, print out request.cookies (printed to terminal)"""
-    print("*********************")
+    print("********just print cookies*************")
     print(request.cookies)
     print("*********************")
+
+# a quick slack session demo
 
 
 @app.route("/")
 def index():
     """Homepage."""
+    # set sessions
+    # session["username"]="dumbo"
+    # access sessions
+    print(session["dumbo"])
+    # update sessions
+    session["dumbo"] = "bonu"
     return render_template("index.html")
+
+# a quick cookie demo
 
 
 @app.route("/demo")
