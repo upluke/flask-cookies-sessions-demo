@@ -140,7 +140,7 @@ def session_later():
 
 
 # **************************
-# SECRET-INVITE DEMO ROUTES:
+# SECRET-INVITE DEMO ROUTES: invite.html; login-form.html
 # **************************
 
 
@@ -161,7 +161,8 @@ def verify_secret_code():
         - set session to indicate that user has access
         - redirect to the secret invite
     """
-    SECRET = "chickenz_are_gr8"
+
+    SECRET = "chickenz_are_gr8"  # hard coded the secret code
     entered_code = request.args["secret_code"]
     if entered_code == SECRET:
         session["entered-pin"] = True
